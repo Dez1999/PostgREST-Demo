@@ -65,7 +65,22 @@ It is also useful to have an authenticator role without admin privileges for con
 postgres=# create role authenticator noinherit login password 'password';
 
 postgres=# grant web_anon to authenticator;
+
+postgres=# grant usage on schema api to web_anon;
+postgres=# grant all on api.products to web_anon;
+postgres=# grant usage, select on sequence api.products_id_seq to web_anon;
+
 ```
+
+5. Create a Secret Key
+In order to successfully authenticate the client and allow them special privileges to the database, we need to create JSON Web Tokens for the requests. JSON Web tokens are cryptographically signed with a secret password that only the server and admin knows. Following best security practices, the password should be a minimum of 32 characters. We need to add the following line to the configuration file.
+
+```
+jwt-secret = "<the password you made>"
+```
+
+7. Sign a Token. A signed authentication token is needed to properly make requests to the server. We can use jwt.io to sign a token. 
+
 5. With the configuration finished, exit psql:
 ```
 postgres=# \q
