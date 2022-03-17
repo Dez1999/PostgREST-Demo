@@ -67,7 +67,7 @@ grant select on api.products to web_anon;
 and an authenticator role that can become web_anon.
 
 ```
-create role authenticator noinherit login password 'mysecretpassword';
+create role authenticator noinherit login password 'password';
 ```
 
 ```
