@@ -61,7 +61,17 @@ grant usage on schema api to web_anon;
 ```
 
 ```
-select on api.products to web_anon;
+grant select on api.products to web_anon;
+```
+
+and an authenticator role that can become web_anon.
+
+```
+create role authenticator noinherit login password 'mysecretpassword';
+```
+
+```
+grant web_anon to authenticator;
 ```
 
 5. For queries that change the database, (Create, Update, Delete), you will need additional permissions. Create a role for this:
