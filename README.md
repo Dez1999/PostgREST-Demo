@@ -93,7 +93,7 @@ jwt-secret = "<the password you made>"
 7. Sign a Token. A signed authentication token is needed to properly make requests to the server. We can use jwt.io to sign a token. 
 
 
-8. Adding an expiration time to the token for security purposes and to ensure the authentication token becomes invalid after a certain period of time. Run the following command in psql to add an expiration of 10 minutes. 
+8. (Optional but recommended) Adding an expiration time to the token for security purposes and to ensure the authentication token becomes invalid after a certain period of time. Run the following command in psql to add an expiration of 10 minutes. 
 
 ```
 select extract(epoch from now() + '10 minutes'::interval) :: integer;
