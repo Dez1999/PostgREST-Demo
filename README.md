@@ -81,7 +81,35 @@ jwt-secret = "<the password you made>"
 
 7. Sign a Token. A signed authentication token is needed to properly make requests to the server. We can use jwt.io to sign a token. 
 
-5. With the configuration finished, exit psql:
+jwtImage.PNG
+![Signing a Token](images/jwtImage.PNG)
+
+
+8. Adding Expiration for security purposes to ensure the authentication token becomes invalid after a certain period of time. Run the following command in psql to add an expiration of 10 minutes. 
+
+```
+select extract(epoch from now() + '10 minutes'::interval) :: integer;
+```
+
+Now, change the payload of the web token at jwt.io to add the new epoch value
+```
+{
+  "role": "todo_user",
+  "exp": 123456789
+}
+
+```
+NOTE: Your epoch value should be different than the example one used above. 
+
+Now, copy and save the new token as a new environment variable
+```
+export NEW_TOKEN="<paste new token>"
+```
+
+After adding this, the requests will be invalid after the expiration time
+
+
+9. With the configuration finished, exit psql:
 ```
 postgres=# \q
 ```
@@ -106,4 +134,13 @@ $ ./postgrest postgrest.conf
 
 ![output from postman](images/PostmanResult.png)
 
-With the setup of the web_anon role, bad requests (i.e. post/put/del) are not allowed.
+4. Create a new product with a call to the API using your selected method.
+
+5. Update an existing product with a call to the API and a specific ID using your selected method. 
+
+6. Delete an existing product by identifying the unique ID of the element. 
+
+7. Read the list of products to display the updated list. 
+
+
+We have now successfully create a RESTful API out-of-the-box using PostgREST.
