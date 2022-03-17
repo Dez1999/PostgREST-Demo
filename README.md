@@ -72,7 +72,18 @@ postgres=# grant usage, select on sequence api.products_id_seq to web_anon;
 
 ```
 
-5. Create a Secret Key
+5. For queries that change the database, (Create, Update, Delete), you will need additional permissions. Create a role for this:
+```
+create role products_user nologin;
+grant products_user to authenticator;
+
+grant usage on schema api to products_user;
+grant all on api.products to products_user;
+grant usage, select on sequence api.products_id_seq to products_user;
+```
+
+
+6. Create a Secret Key
 In order to successfully authenticate the client and allow them special privileges to the database, we need to create JSON Web Tokens for the requests. JSON Web tokens are cryptographically signed with a secret password that only the server and admin knows. Following best security practices, the password should be a minimum of 32 characters. We need to add the following line to the configuration file.
 
 ```
@@ -80,9 +91,6 @@ jwt-secret = "<the password you made>"
 ```
 
 7. Sign a Token. A signed authentication token is needed to properly make requests to the server. We can use jwt.io to sign a token. 
-
-jwtImage.PNG
-![Signing a Token](images/jwtImage.PNG)
 
 
 8. Adding an expiration time to the token for security purposes and to ensure the authentication token becomes invalid after a certain period of time. Run the following command in psql to add an expiration of 10 minutes. 
@@ -94,7 +102,7 @@ select extract(epoch from now() + '10 minutes'::interval) :: integer;
 Now, change the payload of the web token at jwt.io to add the new epoch value
 ```
 {
-  "role": "todo_user",
+  "role": "products_user",
   "exp": 123456789
 }
 
@@ -105,6 +113,8 @@ Now, copy and save the new token as a new environment variable
 ```
 export NEW_TOKEN="<paste new token>"
 ```
+
+OR set it in Postman
 
 After adding this, the requests will be invalid after the expiration time
 
