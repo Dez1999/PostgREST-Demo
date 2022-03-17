@@ -85,7 +85,7 @@ jwtImage.PNG
 ![Signing a Token](images/jwtImage.PNG)
 
 
-8. Adding Expiration for security purposes to ensure the authentication token becomes invalid after a certain period of time. Run the following command in psql to add an expiration of 10 minutes. 
+8. Adding an expiration time to the token for security purposes and to ensure the authentication token becomes invalid after a certain period of time. Run the following command in psql to add an expiration of 10 minutes. 
 
 ```
 select extract(epoch from now() + '10 minutes'::interval) :: integer;
