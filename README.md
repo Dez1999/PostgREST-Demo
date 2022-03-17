@@ -12,10 +12,6 @@ sudo docker run --name postgres -p 5433:5432 \
 
 2. Obtain the PostgREST binary from: https://github.com/PostgREST/postgrest/releases/tag/v9.0.0 and unpack it to your local machine. Test that it works by running the binary file. 
 
-*If you encounter an error like `error while loading shared libraries: libpq.so.5, see image:*
-
-![libpq error](./images/libpq_error.jpg)
-
 3. Access the Postgres container:
 
 ```
